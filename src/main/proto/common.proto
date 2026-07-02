@@ -1,0 +1,31 @@
+syntax = "proto3";
+
+package chat;
+
+option java_multiple_files = true;
+option java_package = "berlin.tu.eecs.chat";
+option java_outer_classname = "CommonProto";
+
+// Gemeinsame Datentypen, die von mehreren gRPC-Services verwendet werden:
+
+// Leere Nachricht; brauchen wir für gRPC-Methode, die keinen Input haben
+// Das ist zB ListMessages
+message Empty {}
+
+// Typ für Chat-Nachrichten (wichtigster Datentyp der Anwendung)
+message ChatMessage {
+  int64 id = 1;
+  string author = 2;
+  string text = 3;
+  int64 timestamp = 4;
+}
+
+// Kann mehrere Chat-Nachrichten enthalten (für ListMessages)
+message MessageList {
+  repeated ChatMessage messages = 1; // repeated heißt Feld kann mehrfach vorkommen
+}
+
+// Nur ein Zahlen-Feld: Speichert Anzahl der gespeicherten Nachrichten
+message CountReply {
+  int32 count = 1;
+}
