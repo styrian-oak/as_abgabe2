@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package chat;
+
+option java_multiple_files = true;
+option java_package = "berlin.tu.eecs.chat";
+option java_outer_classname = "AdminChatProto";
+
+import "common.proto";
+
+// gRPC-Schnittstelle für Admin-Clients
+// Admins dürfen Nachrichten löschen & die # der gespeicherten Nachrichten abfragen
+
+// Welche Methoden bietet der Server an?
+service AdminChatService {
+  rpc DeleteMessage (DeleteMessageRequest) returns (DeleteMessageReply); // Nachricht anhand ID löschen
+  rpc CountMessages (Empty) returns (CountReply);
+}
+
+// Admin-Client schickt Nachricht-ID an Server...
+message DeleteMessageRequest {
+  int64 id = 1;
+}
+
+// ...Server versucht, Nachricht zu löschen, & gibt zurück, ob Löschen erfolgreich war
+message DeleteMessageReply {
+  bool deleted = 1;
+  int32 remaining = 2; // Insges. Anzahl der Nachrichten nach Löschversuch
+}
